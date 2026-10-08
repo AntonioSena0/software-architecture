@@ -1,0 +1,83 @@
+package dev.java.layered_architecture.service;
+
+import dev.java.layered_architecture.dto.request.ProductRequest;
+import dev.java.layered_architecture.dto.request.ProductUpdateRequest;
+import dev.java.layered_architecture.dto.response.ProductResponse;
+import dev.java.layered_architecture.entity.Product;
+import dev.java.layered_architecture.mapper.ProductMapper;
+import dev.java.layered_architecture.repository.ProductRepository;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+@Service
+@AllArgsConstructor
+public class ProductServiceImpl implements ProductService {
+
+    private final ProductRepository repository;
+
+    @Override
+    public Page<ProductResponse> findAll(Pageable pageable) {
+        return repository.findAll(pageable)
+                .map(ProductMapper::toProductResponse);
+    }
+
+    @Override
+    public ProductResponse findById(Long id) {
+        return ProductMapper.toProductResponse(repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado")));
+    }
+
+    @Override
+    @Transactional
+    public ProductResponse create(ProductRequest request) {
+
+        return ProductMapper.toProductResponse(repository.save(ProductMapper.toProduct(request)));
+
+    }
+
+    @Override
+    @Transactional
+    public ProductResponse update(ProductUpdateRequest request, Long id) {
+
+        Product product = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+        if(request.name() != null){
+            if(repository.existsByNameAndIdNot(request.name(), id)){
+                throw new RuntimeException("Esse produto já está cadastrado");
+            }
+            product.setName(request.name());
+        }
+
+        if(request.description() != null){
+            product.setDescription(request.description());
+        }
+
+        if(request.price() != null){
+            product.setDescription(request.description());
+        }
+
+        if(request.stock() != null){
+            product.setStock(request.stock());
+        }
+
+        return ProductMapper.toProductResponse(product);
+
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+
+        if(!repository.existsById(id)){
+            throw new RuntimeException("Produto não encontrado");
+        }
+
+        repository.deleteById(id);
+
+    }
+
+}
