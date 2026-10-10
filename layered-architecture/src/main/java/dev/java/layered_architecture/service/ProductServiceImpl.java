@@ -57,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         if(request.price() != null){
-            product.setDescription(request.description());
+            product.setPrice(request.price());
         }
 
         if(request.stock() != null){
