@@ -49,7 +49,7 @@ public class FindAllUseCaseTest {
 
         Assertions.assertNotNull(result);
         Assertions.assertEquals(1, result.getTotalElements());
-        Assertions.assertEquals("Teclado", result.getContent().getFirst().getName().value());
+        Assertions.assertEquals("teclado", result.getContent().getFirst().getName().value());
 
         Mockito.verify(productRepositoryPort, Mockito.times(1)).findAll(Mockito.any(Pageable.class));
 

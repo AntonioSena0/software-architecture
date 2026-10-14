@@ -56,7 +56,7 @@ public class UpdateProductUseCaseTest {
 
         Assertions.assertNotNull(result);
 
-        Assertions.assertEquals("Notebook antigo", result.getName().value());
+        Assertions.assertEquals("notebook antigo", result.getName().value());
         Assertions.assertEquals("Descrição antiga", result.getDescription());
         Assertions.assertEquals(new BigDecimal("3500.00"), result.getPrice().value());
         Assertions.assertEquals(10, result.getStock().value());
@@ -113,7 +113,7 @@ public class UpdateProductUseCaseTest {
         );
 
         Mockito.when(productRepositoryPort.findById(Mockito.any())).thenReturn(Optional.of(existingProduct));
-        Mockito.when(productRepositoryPort.existsByNameAndIdNot(Mockito.eq("Notebook Novo"), Mockito.eq(new ProductId(productId)))).thenReturn(true);
+        Mockito.when(productRepositoryPort.existsByNameAndIdNot(Mockito.eq("notebook novo"), Mockito.eq(new ProductId(productId)))).thenReturn(true);
 
         Exception exception = Assertions.assertThrows(ProductAlreadyExistsException.class, () -> {
             updateProductUseCase.execute(command, productId);

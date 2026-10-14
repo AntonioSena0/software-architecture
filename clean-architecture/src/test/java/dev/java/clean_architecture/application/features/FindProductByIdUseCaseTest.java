@@ -43,7 +43,7 @@ public class FindProductByIdUseCaseTest {
         ProductModel result = findProductByIdUseCase.execute(productId);
 
         Assertions.assertNotNull(result);
-        Assertions.assertEquals("Notebook", result.getName().value());
+        Assertions.assertEquals("notebook", result.getName().value());
         Assertions.assertEquals(new BigDecimal("3500.00"), result.getPrice().value());
 
         Mockito.verify(productRepositoryPort, Mockito.times(1)).findById(Mockito.any());

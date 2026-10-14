@@ -43,11 +43,11 @@ public class CreateProductUseCaseTest {
         ProductModel result = createProductUseCase.execute(ProductRestMapper.toDomain(request));
 
         Assertions.assertNotNull(result);
-        Assertions.assertEquals("Smartphone", result.getName().value());
+        Assertions.assertEquals("smartphone", result.getName().value());
         Assertions.assertEquals(new BigDecimal("1500.00"), result.getPrice().value());
         Assertions.assertEquals(15, result.getStock().value());
 
-        Mockito.verify(productRepositoryPort, Mockito.times(1)).existsByName("Smartphone");
+        Mockito.verify(productRepositoryPort, Mockito.times(1)).existsByName("smartphone");
         Mockito.verify(productRepositoryPort, Mockito.times(1)).save(Mockito.any(ProductModel.class));
 
     }
@@ -63,7 +63,7 @@ public class CreateProductUseCaseTest {
                 15
         );
 
-        Mockito.when(productRepositoryPort.existsByName("Smartphone")).thenReturn(true);
+        Mockito.when(productRepositoryPort.existsByName("smartphone")).thenReturn(true);
 
         Exception exception = Assertions.assertThrows(ProductAlreadyExistsException.class, () -> {
             createProductUseCase.execute(ProductRestMapper.toDomain(request));
@@ -71,7 +71,7 @@ public class CreateProductUseCaseTest {
 
         Assertions.assertEquals("Já existe um produto com este nome", exception.getMessage());
 
-        Mockito.verify(productRepositoryPort, Mockito.times(1)).existsByName("Smartphone");
+        Mockito.verify(productRepositoryPort, Mockito.times(1)).existsByName("smartphone");
         Mockito.verify(productRepositoryPort, Mockito.never()).save(Mockito.any(ProductModel.class));
 
     }
