@@ -52,10 +52,18 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ProductNotFound("Produto não encontrado"));
 
         if(request.name() != null){
-            if(repository.existsByNameAndIdNot(request.name(), id)){
+
+            String name = request.name()
+                            .trim()
+                            .toLowerCase()
+                            .replaceAll("\\s+", " ");
+
+            if(repository.existsByNameAndIdNot(name, id)){
                 throw new ProductAlreadyExists("Esse produto já está cadastrado");
             }
-            product.setName(request.name());
+
+            product.setName(name);
+
         }
 
         if(request.description() != null){

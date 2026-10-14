@@ -12,7 +12,10 @@ public class ProductMapper {
 
         return Product
                 .builder()
-                .name(request.name())
+                .name(request.name()
+                        .trim()
+                        .toLowerCase()
+                        .replaceAll("\\s+", " "))
                 .description(request.description() != null ? request.description() : "Não possui descrição")
                 .price(request.price())
                 .stock(request.stock())

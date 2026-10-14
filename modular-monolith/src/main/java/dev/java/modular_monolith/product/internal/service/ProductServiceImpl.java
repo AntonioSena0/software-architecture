@@ -103,11 +103,19 @@ public class ProductServiceImpl implements ProductService, ProductManager {
         }
 
         if(request.name() != null){
-            if(repository.existsByNameAndIdNot(request.name(), id)){
+
+            String name = request.name()
+                    .trim()
+                    .toLowerCase()
+                    .replaceAll("\\s+", " ");
+
+            if(repository.existsByNameAndIdNot(name, id)){
                 log.warn("Conflito de nome ao atualizar produto ID {}: O nome '{}' já pertence a outro item.", id, request.name());
                 throw new ProductAlreadyExistsException("Esse produto já está cadastrado");
             }
-            product.setName(request.name());
+
+            product.setName(name);
+
         }
 
         if(request.description() != null){

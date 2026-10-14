@@ -33,7 +33,7 @@ public class UpdateProductUseCaseImpl implements UpdateProductUseCase{
         }
 
         if (productCommand.name() != null && !productCommand.name().isBlank()) {
-            if (productRepositoryPort.existsByNameAndIdNot(productCommand.name(), productId)) {
+            if (productRepositoryPort.existsByNameAndIdNot(productCommand.name().trim().toLowerCase().replaceAll("\\s+", " "), productId)) {
                 throw new ProductAlreadyExistsException("Já existe outro produto com este nome");
             }
         }
