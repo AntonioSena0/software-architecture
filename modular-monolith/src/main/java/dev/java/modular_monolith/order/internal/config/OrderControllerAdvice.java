@@ -1,5 +1,6 @@
 package dev.java.modular_monolith.order.internal.config;
 
+import dev.java.modular_monolith.order.internal.dto.ErrorResponse;
 import dev.java.modular_monolith.order.internal.exception.InsufficientStockException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,8 +18,13 @@ public class OrderControllerAdvice {
 
     @ExceptionHandler(InsufficientStockException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleInsufficientStockException(InsufficientStockException ex) {
-        return ex.getMessage();
+    public ErrorResponse handleInsufficientStockException(InsufficientStockException ex) {
+        return ErrorResponse
+                .builder()
+                .status(HttpStatus.BAD_REQUEST.value())
+                .message(ex.getMessage())
+                .timestamp(LocalDateTime.now())
+                .build();
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

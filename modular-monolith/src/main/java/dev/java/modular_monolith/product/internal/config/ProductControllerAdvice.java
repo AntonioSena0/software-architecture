@@ -1,6 +1,7 @@
 package dev.java.modular_monolith.product.internal.config;
 
-import dev.java.modular_monolith.product.internal.exception.ArchivedProductException;
+import dev.java.modular_monolith.product.internal.dto.ErrorResponse;
+import dev.java.modular_monolith.product.internal.exception.BusinessRuleException;
 import dev.java.modular_monolith.product.internal.exception.ProductAlreadyExistsException;
 import dev.java.modular_monolith.product.internal.exception.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,20 +20,41 @@ public class ProductControllerAdvice {
 
     @ExceptionHandler(ProductNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleProductNotFoundException(ProductNotFoundException ex) {
-        return ex.getMessage();
+    public ErrorResponse handleProductNotFoundException(ProductNotFoundException ex) {
+
+        return ErrorResponse
+                .builder()
+                .status(HttpStatus.NOT_FOUND.value())
+                .message(ex.getMessage())
+                .timestamp(LocalDateTime.now())
+                .build();
+
     }
 
     @ExceptionHandler(ProductAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public String handleProductAlreadyExists(ProductAlreadyExistsException ex) {
-        return ex.getMessage();
+    public ErrorResponse handleProductAlreadyExists(ProductAlreadyExistsException ex) {
+
+        return ErrorResponse
+                .builder()
+                .status(HttpStatus.CONFLICT.value())
+                .message(ex.getMessage())
+                .timestamp(LocalDateTime.now())
+                .build();
+
     }
 
-    @ExceptionHandler(ArchivedProductException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleArchivedProductException(ArchivedProductException ex) {
-        return ex.getMessage();
+    @ExceptionHandler(BusinessRuleException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_CONTENT)
+    public ErrorResponse handleBusinessRuleException(BusinessRuleException ex) {
+
+        return ErrorResponse
+                .builder()
+                .status(HttpStatus.UNPROCESSABLE_CONTENT.value())
+                .message(ex.getMessage())
+                .timestamp(LocalDateTime.now())
+                .build();
+
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

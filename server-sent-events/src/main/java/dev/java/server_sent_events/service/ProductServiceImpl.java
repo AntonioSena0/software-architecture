@@ -4,6 +4,8 @@ import dev.java.server_sent_events.dto.request.ProductRequest;
 import dev.java.server_sent_events.dto.response.ProductResponse;
 import dev.java.server_sent_events.event.ProductCreatedEvent;
 import dev.java.server_sent_events.event.ProductDeletedEvent;
+import dev.java.server_sent_events.exception.ProductAlreadyExistsException;
+import dev.java.server_sent_events.exception.ProductNotFoundException;
 import dev.java.server_sent_events.mapper.ProductMapper;
 import dev.java.server_sent_events.repository.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -30,6 +32,10 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public ProductResponse create(ProductRequest request) {
 
+        if(repository.existsByName(request.name())){
+            throw new ProductAlreadyExistsException("Esse produto já existe");
+        }
+
         ProductResponse product = ProductMapper.toProductResponse(repository.save(ProductMapper.toProduct(request)));
         eventPublisher.publishEvent(new ProductCreatedEvent(product));
 
@@ -42,7 +48,7 @@ public class ProductServiceImpl implements ProductService {
     public void delete(Long id) {
 
         if(!repository.existsById(id)){
-            throw new RuntimeException("Produto não encontrado");
+            throw new ProductNotFoundException("Produto não encontrado");
         }
 
         repository.deleteById(id);

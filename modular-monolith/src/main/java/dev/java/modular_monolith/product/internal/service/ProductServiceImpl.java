@@ -8,7 +8,7 @@ import dev.java.modular_monolith.product.internal.repository.ProductRepository;
 import dev.java.modular_monolith.product.internal.dto.ProductRequest;
 import dev.java.modular_monolith.product.internal.dto.ProductResponse;
 import dev.java.modular_monolith.product.internal.dto.ProductUpdateRequest;
-import dev.java.modular_monolith.product.internal.exception.ArchivedProductException;
+import dev.java.modular_monolith.product.internal.exception.BusinessRuleException;
 import dev.java.modular_monolith.product.internal.exception.ProductAlreadyExistsException;
 import dev.java.modular_monolith.product.internal.exception.ProductNotFoundException;
 import dev.java.modular_monolith.product.internal.mapper.ProductMapper;
@@ -57,6 +57,10 @@ public class ProductServiceImpl implements ProductService, ProductManager {
 
         log.info("Iniciando cadastro de novo produto: '{}'", request.name());
 
+        if(repository.existsByName(request.name())){
+            throw new ProductAlreadyExistsException("Esse produto já está cadastrado");
+        }
+
         ProductStatus status = ProductStatus.ACTIVE;
 
         if(request.stock() <= 0){
@@ -95,7 +99,7 @@ public class ProductServiceImpl implements ProductService, ProductManager {
 
         if(product.getStatus() == ProductStatus.ARCHIVED){
             log.warn("Falha ao atualizar o produto: Produto ID {} está arquivado.", id);
-            throw new ArchivedProductException("Esse produto está arquivado");
+            throw new BusinessRuleException("Esse produto está arquivado");
         }
 
         if(request.name() != null){
@@ -132,7 +136,7 @@ public class ProductServiceImpl implements ProductService, ProductManager {
     @Transactional
     public void archive(Long id) {
 
-        log.info("Iniciando arquivamento/desarquivamento do produto ID: {}", id);
+        log.info("Iniciando arquivamento do produto ID: {}", id);
 
         Product product = repository.findById(id)
                 .orElseThrow(() -> {
@@ -141,16 +145,40 @@ public class ProductServiceImpl implements ProductService, ProductManager {
                 });
 
         if (product.getStatus() == ProductStatus.ARCHIVED) {
-            if(product.getStock() == 0){
-                product.setStatus(ProductStatus.INACTIVE);
-            } else {
-                product.setStatus(ProductStatus.ACTIVE);
-            }
-        } else {
-            product.setStatus(ProductStatus.ARCHIVED);
+            log.warn("Tentativa de arquivar produto já arquivado com ID: {}", id);
+            throw new BusinessRuleException("Esse produto já está arquivado");
         }
 
-        log.info("Produto ID {} arquivado/desarquivado com sucesso.", id);
+        product.setStatus(ProductStatus.ARCHIVED);
+
+        log.info("Produto ID {} arquivado com sucesso.", id);
+
+    }
+
+    @Override
+    @Transactional
+    public void desarchive(Long id) {
+
+        log.info("Iniciando desarquivamento do produto ID: {}", id);
+
+        Product product = repository.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("Tentativa de desarquivar produto inexistente com ID: {}", id);
+                    return new ProductNotFoundException("Produto não encontrado");
+                });
+
+        if (product.getStatus() == ProductStatus.ACTIVE || product.getStatus() == ProductStatus.INACTIVE) {
+            log.warn("Tentativa de desarquivar produto já desarquivado com ID: {}", id);
+            throw new BusinessRuleException("Esse produto já está desarquivado");
+        }
+
+        if(product.getStock() == 0){
+            product.setStatus(ProductStatus.INACTIVE);
+        } else {
+            product.setStatus(ProductStatus.ACTIVE);
+        }
+
+        log.info("Produto ID {} desarquivado com sucesso.", id);
 
     }
 
@@ -190,7 +218,7 @@ public class ProductServiceImpl implements ProductService, ProductManager {
 
         if(product.getStatus() == ProductStatus.ARCHIVED){
             log.warn("Falha ao atualizar o estoque: Produto ID {} está arquivado.", id);
-            throw new ArchivedProductException("Esse produto está arquivado");
+            throw new BusinessRuleException("Esse produto está arquivado");
         }
 
         int newStock = product.getStock() - quantity;
@@ -217,7 +245,7 @@ public class ProductServiceImpl implements ProductService, ProductManager {
 
         if(product.getStatus() == ProductStatus.ARCHIVED){
             log.info("Verificação concluída: Produto ID {} está arquivado.", id);
-            throw new ArchivedProductException("Esse produto está arquivado");
+            throw new BusinessRuleException("Esse produto está arquivado");
         }
 
     }

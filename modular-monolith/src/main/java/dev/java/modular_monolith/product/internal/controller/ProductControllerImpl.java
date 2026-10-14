@@ -54,4 +54,11 @@ public class ProductControllerImpl implements ProductController{
         return ResponseEntity.noContent().build();
     }
 
+    @Override
+    @PatchMapping("/desarchive/{id}")
+    public ResponseEntity<Void> desarchive(@PathVariable Long id) {
+        service.desarchive(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

@@ -4,6 +4,8 @@ import dev.java.layered_architecture.dto.request.ProductRequest;
 import dev.java.layered_architecture.dto.request.ProductUpdateRequest;
 import dev.java.layered_architecture.dto.response.ProductResponse;
 import dev.java.layered_architecture.entity.Product;
+import dev.java.layered_architecture.exception.ProductAlreadyExists;
+import dev.java.layered_architecture.exception.ProductNotFound;
 import dev.java.layered_architecture.mapper.ProductMapper;
 import dev.java.layered_architecture.repository.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -27,12 +29,16 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponse findById(Long id) {
         return ProductMapper.toProductResponse(repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado")));
+                .orElseThrow(() -> new ProductNotFound("Produto não encontrado")));
     }
 
     @Override
     @Transactional
     public ProductResponse create(ProductRequest request) {
+
+        if(repository.existsByName(request.name())){
+            throw new ProductAlreadyExists("Esse produto já existe");
+        }
 
         return ProductMapper.toProductResponse(repository.save(ProductMapper.toProduct(request)));
 
@@ -43,11 +49,11 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse update(ProductUpdateRequest request, Long id) {
 
         Product product = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+                .orElseThrow(() -> new ProductNotFound("Produto não encontrado"));
 
         if(request.name() != null){
             if(repository.existsByNameAndIdNot(request.name(), id)){
-                throw new RuntimeException("Esse produto já está cadastrado");
+                throw new ProductAlreadyExists("Esse produto já está cadastrado");
             }
             product.setName(request.name());
         }
@@ -73,7 +79,7 @@ public class ProductServiceImpl implements ProductService {
     public void delete(Long id) {
 
         if(!repository.existsById(id)){
-            throw new RuntimeException("Produto não encontrado");
+            throw new ProductNotFound("Produto não encontrado");
         }
 
         repository.deleteById(id);

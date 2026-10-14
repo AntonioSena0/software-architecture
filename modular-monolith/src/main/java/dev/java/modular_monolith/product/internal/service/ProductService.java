@@ -13,5 +13,6 @@ public interface ProductService {
     ProductResponse create(ProductRequest request);
     ProductResponse update(ProductUpdateRequest request, Long id);
     void archive(Long id);
+    void desarchive(Long id);
 
 }

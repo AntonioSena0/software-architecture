@@ -14,5 +14,6 @@ public interface ProductController {
     ResponseEntity<ProductResponse> create(ProductRequest request);
     ResponseEntity<ProductResponse> update(ProductUpdateRequest request, Long id);
     ResponseEntity<Void> archive(Long id);
+    ResponseEntity<Void> desarchive(Long id);
 
 }
