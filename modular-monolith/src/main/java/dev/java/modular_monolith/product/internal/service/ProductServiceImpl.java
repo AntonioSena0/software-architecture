@@ -57,7 +57,7 @@ public class ProductServiceImpl implements ProductService, ProductManager {
 
         log.info("Iniciando cadastro de novo produto: '{}'", request.name());
 
-        if(repository.existsByName(request.name())){
+        if(repository.existsByName(request.name().trim().toLowerCase().replaceAll("\\s+", " "))){
             throw new ProductAlreadyExistsException("Esse produto já está cadastrado");
         }
 

@@ -32,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public ProductResponse create(ProductRequest request) {
 
-        if(repository.existsByName(request.name())){
+        if(repository.existsByName(request.name().trim().toLowerCase().replaceAll("\\s+", " "))){
             throw new ProductAlreadyExistsException("Esse produto já existe");
         }
 
