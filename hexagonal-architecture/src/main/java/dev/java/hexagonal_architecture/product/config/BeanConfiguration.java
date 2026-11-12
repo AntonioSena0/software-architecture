@@ -1,5 +1,6 @@
 package dev.java.hexagonal_architecture.product.config;
 
+import dev.java.hexagonal_architecture.product.application.service.*;
 import dev.java.hexagonal_architecture.product.ports.inbound.features.*;
 import dev.java.hexagonal_architecture.product.ports.outbound.ProductRepositoryPort;
 import org.springframework.context.annotation.Bean;

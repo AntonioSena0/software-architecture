@@ -1,5 +1,6 @@
-package dev.java.hexagonal_architecture.product.ports.inbound.features;
+package dev.java.hexagonal_architecture.product.application.service;
 
+import dev.java.hexagonal_architecture.product.ports.inbound.features.CreateProductUseCase;
 import dev.java.hexagonal_architecture.product.domain.exception.ProductAlreadyExistsException;
 import dev.java.hexagonal_architecture.product.domain.model.ProductModel;
 import dev.java.hexagonal_architecture.product.ports.outbound.ProductRepositoryPort;

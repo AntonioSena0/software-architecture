@@ -1,8 +1,7 @@
-package dev.java.hexagonal_architecture.ports.features;
+package dev.java.hexagonal_architecture.product.application.service;
 
 import dev.java.hexagonal_architecture.product.domain.exception.ProductNotFoundException;
 import dev.java.hexagonal_architecture.product.domain.model.ProductModel;
-import dev.java.hexagonal_architecture.product.ports.inbound.features.FindProductByIdUseCaseImpl;
 import dev.java.hexagonal_architecture.product.ports.outbound.ProductRepositoryPort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

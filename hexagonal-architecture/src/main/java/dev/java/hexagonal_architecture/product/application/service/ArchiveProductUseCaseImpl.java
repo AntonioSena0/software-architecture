@@ -1,5 +1,6 @@
-package dev.java.hexagonal_architecture.product.ports.inbound.features;
+package dev.java.hexagonal_architecture.product.application.service;
 
+import dev.java.hexagonal_architecture.product.ports.inbound.features.ArchiveProductUseCase;
 import dev.java.hexagonal_architecture.product.domain.enums.ProductStatus;
 import dev.java.hexagonal_architecture.product.domain.exception.BusinessRuleException;
 import dev.java.hexagonal_architecture.product.domain.exception.ProductNotFoundException;

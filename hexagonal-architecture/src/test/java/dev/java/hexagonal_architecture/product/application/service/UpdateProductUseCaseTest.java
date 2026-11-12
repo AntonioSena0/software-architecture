@@ -1,4 +1,4 @@
-package dev.java.hexagonal_architecture.ports.features;
+package dev.java.hexagonal_architecture.product.application.service;
 
 import dev.java.hexagonal_architecture.product.domain.exception.BusinessRuleException;
 import dev.java.hexagonal_architecture.product.domain.exception.ProductAlreadyExistsException;
@@ -6,7 +6,6 @@ import dev.java.hexagonal_architecture.product.domain.exception.ProductNotFoundE
 import dev.java.hexagonal_architecture.product.domain.model.ProductModel;
 import dev.java.hexagonal_architecture.product.domain.valueobject.ProductId;
 import dev.java.hexagonal_architecture.product.ports.inbound.command.UpdateProductCommand;
-import dev.java.hexagonal_architecture.product.ports.inbound.features.UpdateProductUseCaseImpl;
 import dev.java.hexagonal_architecture.product.ports.outbound.ProductRepositoryPort;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
