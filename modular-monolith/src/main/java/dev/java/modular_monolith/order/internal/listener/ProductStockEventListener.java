@@ -2,7 +2,6 @@ package dev.java.modular_monolith.order.internal.listener;
 
 import dev.java.modular_monolith.order.OrderCreatedEvent;
 import dev.java.modular_monolith.product.ProductManager;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.modulith.events.ApplicationModuleListener;
@@ -16,7 +15,6 @@ public class ProductStockEventListener {
     private final ProductManager productManager;
 
     @ApplicationModuleListener
-    @Transactional
     public void onOrderCreated(OrderCreatedEvent event) {
 
         log.info("Processando evento OrderCreatedEvent [orderId={}, productId={}, quantity={}]",
