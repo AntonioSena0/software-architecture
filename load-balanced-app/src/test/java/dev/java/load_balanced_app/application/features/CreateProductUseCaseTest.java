@@ -1,4 +1,4 @@
-package dev.java.clean_architecture.application.features;
+package dev.java.load_balanced_app.application.features;
 
 import dev.java.load_balanced_app.api.dto.request.ProductRequest;
 import dev.java.load_balanced_app.api.mapper.ProductRestMapper;

@@ -1,4 +1,4 @@
-package dev.java.clean_architecture.application.features;
+package dev.java.load_balanced_app.application.features;
 
 import dev.java.load_balanced_app.application.features.product.FindProductByIdUseCaseImpl;
 import dev.java.load_balanced_app.application.interfaces.ProductRepositoryPort;
