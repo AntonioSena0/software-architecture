@@ -8,11 +8,11 @@ import dev.java.layered_architecture.exception.ProductAlreadyExists;
 import dev.java.layered_architecture.exception.ProductNotFound;
 import dev.java.layered_architecture.mapper.ProductMapper;
 import dev.java.layered_architecture.repository.ProductRepository;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -36,7 +36,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public ProductResponse create(ProductRequest request) {
 
-        if(repository.existsByName(request.name().trim().toLowerCase().replaceAll("\\s", " "))){
+        if(repository.existsByName(request.name().trim().toLowerCase().replaceAll("\\s+", " "))){
             throw new ProductAlreadyExists("Esse produto já existe");
         }
 
