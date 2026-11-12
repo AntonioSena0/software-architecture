@@ -8,12 +8,12 @@ import dev.java.server_sent_events.exception.ProductAlreadyExistsException;
 import dev.java.server_sent_events.exception.ProductNotFoundException;
 import dev.java.server_sent_events.mapper.ProductMapper;
 import dev.java.server_sent_events.repository.ProductRepository;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor

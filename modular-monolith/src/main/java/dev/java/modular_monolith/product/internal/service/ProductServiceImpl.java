@@ -12,13 +12,13 @@ import dev.java.modular_monolith.product.internal.exception.BusinessRuleExceptio
 import dev.java.modular_monolith.product.internal.exception.ProductAlreadyExistsException;
 import dev.java.modular_monolith.product.internal.exception.ProductNotFoundException;
 import dev.java.modular_monolith.product.internal.mapper.ProductMapper;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 

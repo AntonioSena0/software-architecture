@@ -8,11 +8,11 @@ import dev.java.modular_monolith.order.internal.dto.BuyRequest;
 import dev.java.modular_monolith.order.internal.exception.InsufficientStockException;
 import dev.java.modular_monolith.order.internal.mapper.OrderMapper;
 import dev.java.modular_monolith.product.ProductManager;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
